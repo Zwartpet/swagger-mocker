@@ -1,0 +1,18 @@
+services:
+    api.document_controller:
+        class: Vancis\SwaggerMockerBundle\Controller\OpenApiDocumentController
+        arguments: ['@swagger.document.repository']
+
+    cache.documents:
+        class: Doctrine\Common\Cache\ArrayCache
+        calls:
+          - [ setNamespace, ['documents'] ]
+
+    swagger.mocker.route_loader:
+        class: Vancis\SwaggerMockerBundle\Routing\SwaggerMockRouteLoader
+        arguments: ['@swagger.document.repository']
+        tags:
+           - { name: routing.loader }
+
+    swagger.controller.default:
+        class: Vancis\SwaggerMockerBundle\Controller\DefaultController

@@ -1,0 +1,9 @@
+imports:
+    - { resource: config.yml }
+
+monolog:
+    handlers:
+        stderr:
+            type:  stream
+            path:  php://stderr
+            level: %base_log_level%

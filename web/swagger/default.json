@@ -1,0 +1,2038 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "2.0.0",
+    "title": "Reporting API",
+    "contact": {
+      "email": "john.kleijn@vancis.nl"
+    }
+  },
+  "host": "localhost",
+  "basePath": "\/report\/v2.0",
+  "schemes": [
+    "https"
+  ],
+  "parameters": {
+    "contactId": {
+      "name": "contactId",
+      "in": "query",
+      "type": "integer",
+      "description": "Used to identify the company to be used",
+      "x-ref-id": "#\/parameters\/contactId"
+    },
+    "companyId": {
+      "name": "companyId",
+      "in": "query",
+      "type": "integer",
+      "description": "Used to identify the company to be used",
+      "x-ref-id": "#\/parameters\/companyId"
+    },
+    "invoiceRef": {
+      "name": "invoiceRef",
+      "in": "query",
+      "type": "string",
+      "description": "Include records associated with this invoice",
+      "x-ref-id": "#\/parameters\/invoiceRef"
+    },
+    "contractId": {
+      "name": "contractId",
+      "in": "query",
+      "type": "integer",
+      "description": "Include records associated with this contract",
+      "x-ref-id": "#\/parameters\/contractId"
+    },
+    "startDate": {
+      "name": "startDate",
+      "in": "query",
+      "type": "string",
+      "format": "date",
+      "description": "Include records collected starting this date (inclusive)",
+      "x-ref-id": "#\/parameters\/startDate"
+    },
+    "endDate": {
+      "name": "endDate",
+      "in": "query",
+      "type": "string",
+      "format": "date",
+      "description": "Include records collected until this date (exclusive)",
+      "x-ref-id": "#\/parameters\/endDate"
+    }
+  },
+  "responses": {
+    "DataSetTooLargeError": {
+      "description": "The resulting data set is too large",
+      "schema": {
+        "type": "object",
+        "required": [
+          "message",
+          "logref"
+        ],
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "logref": {
+            "type": "string"
+          }
+        },
+        "x-ref-id": "#\/definitions\/SimpleVndError"
+      },
+      "examples": {
+        "application\/vnd.error+json": {
+          "message": "An unspecified error occurred",
+          "logref": "55e70ae612c2a"
+        }
+      },
+      "x-ref-id": "#\/responses\/DataSetTooLargeError"
+    },
+    "InputError": {
+      "description": "Bad Input For Request",
+      "schema": {
+        "type": "object",
+        "required": [
+          "message",
+          "logref"
+        ],
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "logref": {
+            "type": "string"
+          }
+        },
+        "x-ref-id": "#\/definitions\/SimpleVndInputError"
+      },
+      "examples": {
+        "application\/vnd.error+json": {
+          "message": "contractId is required",
+          "logref": "55e70b2bec80b"
+        }
+      },
+      "x-ref-id": "#\/responses\/InputError"
+    },
+    "UnspecifiedError": {
+      "description": "Server Error",
+      "schema": {
+        "type": "object",
+        "required": [
+          "message",
+          "logref"
+        ],
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "logref": {
+            "type": "string"
+          }
+        },
+        "x-ref-id": "#\/definitions\/SimpleVndError"
+      },
+      "examples": {
+        "application\/vnd.error+json": {
+          "message": "An unspecified error occurred",
+          "logref": "55e70ae612c2a"
+        }
+      },
+      "x-ref-id": "#\/responses\/UnspecifiedError"
+    },
+    "ServerError": {
+      "description": "Server Error",
+      "schema": {
+        "type": "object",
+        "required": [
+          "message",
+          "logref"
+        ],
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "logref": {
+            "type": "string"
+          }
+        },
+        "x-ref-id": "#\/definitions\/SimpleVndError"
+      },
+      "examples": {
+        "application\/vnd.error+json": {
+          "message": "An unspecified error occurred",
+          "logref": "55e70ae6w786d"
+        }
+      },
+      "x-ref-id": "#\/responses\/ServerError"
+    },
+    "EntityNotFoundError": {
+      "description": "Entity Not Found",
+      "schema": {
+        "type": "object",
+        "required": [
+          "message",
+          "logref"
+        ],
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "logref": {
+            "type": "string"
+          }
+        },
+        "x-ref-id": "#\/definitions\/SimpleVndError"
+      },
+      "examples": {
+        "application\/vnd.error+json": {
+          "message": "An unspecified error occurred",
+          "logref": "55e70ae612c2a"
+        }
+      },
+      "x-ref-id": "#\/responses\/EntityNotFoundError"
+    }
+  },
+  "paths": {
+    "\/invoices": {
+      "get": {
+        "operationId": "vancis_metrics.api.contract.controller.invoice:get",
+        "summary": "Fetch invoice names and IDs",
+        "description": "Fetches the names and IDs of invoices associated with an company by contact ID",
+        "security": [
+          {
+            "api_key": []
+          }
+        ],
+        "produces": [
+          "application\/json",
+          "application\/vnd.error+json"
+        ],
+        "parameters": [
+          {
+            "name": "year",
+            "required": true,
+            "in": "query",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": [
+                  "ref",
+                  "name"
+                ],
+                "properties": {
+                  "ref": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  }
+                },
+                "x-ref-id": "#\/definitions\/Invoice"
+              }
+            },
+            "examples": {
+              "application\/json": [
+                {
+                  "ref": "2015-08",
+                  "name": "August 2015"
+                },
+                {
+                  "ref": "2015-07",
+                  "name": "July 2015"
+                }
+              ]
+            }
+          },
+          "400": {
+            "description": "Bad Input For Request",
+            "schema": {
+              "type": "object",
+              "required": [
+                "message",
+                "logref"
+              ],
+              "properties": {
+                "message": {
+                  "type": "string"
+                },
+                "logref": {
+                  "type": "string"
+                }
+              },
+              "x-ref-id": "#\/definitions\/SimpleVndInputError"
+            },
+            "examples": {
+              "application\/vnd.error+json": {
+                "message": "contractId is required",
+                "logref": "55e70b2bec80b"
+              }
+            },
+            "x-ref-id": "#\/responses\/InputError"
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "type": "object",
+              "required": [
+                "message",
+                "logref"
+              ],
+              "properties": {
+                "message": {
+                  "type": "string"
+                },
+                "logref": {
+                  "type": "string"
+                }
+              },
+              "x-ref-id": "#\/definitions\/SimpleVndError"
+            },
+            "examples": {
+              "application\/vnd.error+json": {
+                "message": "An unspecified error occurred",
+                "logref": "55e70ae612c2a"
+              }
+            },
+            "x-ref-id": "#\/responses\/UnspecifiedError"
+          }
+        }
+      }
+    },
+    "\/contracts": {
+      "get": {
+        "operationId": "vancis_metrics.api.contract.controller.contract:get",
+        "summary": "Fetch contract names and IDs",
+        "description": "Fetches the names and IDs of contracts associated with an company by contact ID",
+        "security": [
+          {
+            "api_key": []
+          }
+        ],
+        "produces": [
+          "application\/json",
+          "application\/vnd.error+json"
+        ],
+        "parameters": [
+          {
+            "name": "contactId",
+            "in": "query",
+            "type": "integer",
+            "description": "Used to identify the company to be used",
+            "x-ref-id": "#\/parameters\/contactId"
+          },
+          {
+            "name": "companyId",
+            "in": "query",
+            "type": "integer",
+            "description": "Used to identify the company to be used",
+            "x-ref-id": "#\/parameters\/companyId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": [
+                  "id",
+                  "name",
+                  "recordCount"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "integer"
+                  },
+                  "recordCount": {
+                    "type": "integer"
+                  },
+                  "name": {
+                    "type": "string"
+                  }
+                },
+                "x-ref-id": "#\/definitions\/Contract"
+              }
+            },
+            "examples": {
+              "application\/json": [
+                {
+                  "id": 123456789,
+                  "name": "Some contract name"
+                },
+                {
+                  "ref": 987654321,
+                  "name": "Some other contract name"
+                }
+              ]
+            }
+          },
+          "400": {
+            "description": "Bad Input For Request",
+            "schema": {
+              "type": "object",
+              "required": [
+                "message",
+                "logref"
+              ],
+              "properties": {
+                "message": {
+                  "type": "string"
+                },
+                "logref": {
+                  "type": "string"
+                }
+              },
+              "x-ref-id": "#\/definitions\/SimpleVndInputError"
+            },
+            "examples": {
+              "application\/vnd.error+json": {
+                "message": "contractId is required",
+                "logref": "55e70b2bec80b"
+              }
+            },
+            "x-ref-id": "#\/responses\/InputError"
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "type": "object",
+              "required": [
+                "message",
+                "logref"
+              ],
+              "properties": {
+                "message": {
+                  "type": "string"
+                },
+                "logref": {
+                  "type": "string"
+                }
+              },
+              "x-ref-id": "#\/definitions\/SimpleVndError"
+            },
+            "examples": {
+              "application\/vnd.error+json": {
+                "message": "An unspecified error occurred",
+                "logref": "55e70ae612c2a"
+              }
+            },
+            "x-ref-id": "#\/responses\/UnspecifiedError"
+          }
+        }
+      }
+    },
+    "\/vm\/report": {
+      "get": {
+        "operationId": "swagger.controller.report2:get",
+        "summary": "Fetch a report",
+        "description": "Get a summary of VM usage, average memory and other interesting facts",
+        "security": [
+          {
+            "api_key": []
+          }
+        ],
+        "produces": [
+          "application\/json",
+          "application\/vnd.error+json"
+        ],
+        "parameters": [
+          {
+            "name": "contactId",
+            "in": "query",
+            "type": "integer",
+            "description": "Used to identify the company to be used",
+            "x-ref-id": "#\/parameters\/contactId"
+          },
+          {
+            "name": "invoiceRef",
+            "in": "query",
+            "type": "string",
+            "description": "Include records associated with this invoice",
+            "x-ref-id": "#\/parameters\/invoiceRef"
+          },
+          {
+            "name": "contractId",
+            "in": "query",
+            "type": "integer",
+            "description": "Include records associated with this contract",
+            "x-ref-id": "#\/parameters\/contractId"
+          },
+          {
+            "name": "startDate",
+            "in": "query",
+            "type": "string",
+            "format": "date",
+            "description": "Include records collected starting this date (inclusive)",
+            "x-ref-id": "#\/parameters\/startDate"
+          },
+          {
+            "name": "endDate",
+            "in": "query",
+            "type": "string",
+            "format": "date",
+            "description": "Include records collected until this date (exclusive)",
+            "x-ref-id": "#\/parameters\/endDate"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": [
+                  "name",
+                  "description",
+                  "types"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "Readable source type"
+                  },
+                  "types": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "vmName",
+                        "records",
+                        "monthAverage",
+                        "units"
+                      ],
+                      "properties": {
+                        "vmName": {
+                          "type": "string"
+                        },
+                        "monthAverage": {
+                          "type": "number",
+                          "format": "float"
+                        },
+                        "units": {
+                          "type": "number",
+                          "format": "float"
+                        },
+                        "records": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "required": [
+                              "id",
+                              "contractId",
+                              "vmName",
+                              "vmRef",
+                              "recordedOn",
+                              "wasPoweredOn",
+                              "cpus",
+                              "ram",
+                              "storage"
+                            ],
+                            "properties": {
+                              "id": {
+                                "type": "integer",
+                                "format": "int64"
+                              },
+                              "contractId": {
+                                "type": "integer",
+                                "format": "int64"
+                              },
+                              "vmName": {
+                                "type": "string",
+                                "description": "Name of the virtual machine"
+                              },
+                              "vmRef": {
+                                "type": "string",
+                                "description": "Reference ID of the virtual machine"
+                              },
+                              "recordedOn": {
+                                "type": "string",
+                                "format": "date"
+                              },
+                              "wasPoweredOn": {
+                                "type": "boolean"
+                              },
+                              "cpus": {
+                                "type": "integer",
+                                "format": "int8",
+                                "description": "Number of assigned CPUs"
+                              },
+                              "ram": {
+                                "type": "integer",
+                                "format": "int8",
+                                "description": "Assigned RAM in GB"
+                              },
+                              "storage": {
+                                "type": "integer",
+                                "format": "int64",
+                                "description": "Used storage in bytes"
+                              },
+                              "vmClass": {
+                                "type": "string",
+                                "description": "Classification of the VM, eg \"C216\""
+                              },
+                              "sourceType": {
+                                "type": "string",
+                                "description": "Standardized VM type name, eg \"VMM01\""
+                              },
+                              "sourceTypeDescription": {
+                                "type": "string",
+                                "description": "Understandable source type name eg \"Memory Intensive\""
+                              },
+                              "guestOs": {
+                                "type": "string",
+                                "description": "Eg \"Microsoft Windows Server 2008 R2 (64-bit)\""
+                              }
+                            },
+                            "x-ref-id": "#\/definitions\/VmSpecRecord"
+                          }
+                        }
+                      },
+                      "x-ref-id": "#\/definitions\/VmSpecVirtualMachine"
+                    }
+                  }
+                },
+                "x-ref-id": "#\/definitions\/VmSpecSourceType"
+              },
+              "x-ref-id": "#\/definitions\/VmSpecReport"
+            },
+            "examples": {
+              "application\/json": [
+                {
+                  "name": "VMM01",
+                  "description": "Memory Intensive",
+                  "types": [
+                    {
+                      "vmName": "VBHR001",
+                      "monthAverage": 0.66,
+                      "units": 8,
+                      "records": [
+                        {
+                          "id": 1,
+                          "contractId": 29724721,
+                          "vmName": "VBHR001",
+                          "vmRef": "vm-502536",
+                          "recordedOn": 1432684800,
+                          "wasPoweredOn": true,
+                          "cpus": 2,
+                          "ram": 8,
+                          "storage": 108178511835,
+                          "vmClass": "C208",
+                          "sourceType": "VMM01",
+                          "sourceTypeDescription": "Memory Intensive",
+                          "guestOs": "Microsoft Windows Server 2008 (64-bit)"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "name": "VMC01",
+                  "description": "CPU Intensive",
+                  "types": [
+                    {
+                      "vmName": "CORDPSDBS002",
+                      "monthAverage": 0.66,
+                      "units": 8,
+                      "records": [
+                        {
+                          "id": 2,
+                          "contractId": 29724721,
+                          "vmName": "CORDPSDBS002",
+                          "vmRef": "vm-266053",
+                          "recordedOn": 1432684800,
+                          "wasPoweredOn": true,
+                          "cpus": 8,
+                          "ram": 1,
+                          "storage": 142854203084,
+                          "vmClass": "C216",
+                          "sourceType": "VMC01",
+                          "sourceTypeDescription": "CPU Intensive",
+                          "guestOs": "Microsoft Windows Server 2008 R2 (64-bit)"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          "403": {
+            "description": "The resulting data set is too large",
+            "schema": {
+              "type": "object",
+              "required": [
+                "message",
+                "logref"
+              ],
+              "properties": {
+                "message": {
+                  "type": "string"
+                },
+                "logref": {
+                  "type": "string"
+                }
+              },
+              "x-ref-id": "#\/definitions\/SimpleVndError"
+            },
+            "examples": {
+              "application\/vnd.error+json": {
+                "message": "An unspecified error occurred",
+                "logref": "55e70ae612c2a"
+              }
+            },
+            "x-ref-id": "#\/responses\/DataSetTooLargeError"
+          },
+          "400": {
+            "description": "Bad Input For Request",
+            "schema": {
+              "type": "object",
+              "required": [
+                "message",
+                "logref"
+              ],
+              "properties": {
+                "message": {
+                  "type": "string"
+                },
+                "logref": {
+                  "type": "string"
+                }
+              },
+              "x-ref-id": "#\/definitions\/SimpleVndInputError"
+            },
+            "examples": {
+              "application\/vnd.error+json": {
+                "message": "contractId is required",
+                "logref": "55e70b2bec80b"
+              }
+            },
+            "x-ref-id": "#\/responses\/InputError"
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "type": "object",
+              "required": [
+                "message",
+                "logref"
+              ],
+              "properties": {
+                "message": {
+                  "type": "string"
+                },
+                "logref": {
+                  "type": "string"
+                }
+              },
+              "x-ref-id": "#\/definitions\/SimpleVndError"
+            },
+            "examples": {
+              "application\/vnd.error+json": {
+                "message": "An unspecified error occurred",
+                "logref": "55e70ae612c2a"
+              }
+            },
+            "x-ref-id": "#\/responses\/UnspecifiedError"
+          }
+        }
+      }
+    },
+    "\/backup\/contracts": {
+      "get": {
+        "operationId": "vancis_metrics.api.contract.controller.contract:getBackupContracts",
+        "summary": "Fetch contract names and IDs",
+        "description": "Fetches the names and IDs of contracts associated with an company by contact ID",
+        "security": [
+          {
+            "api_key": []
+          }
+        ],
+        "produces": [
+          "application\/json",
+          "application\/vnd.error+json"
+        ],
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "query",
+            "type": "integer",
+            "description": "Used to identify the company to be used",
+            "x-ref-id": "#\/parameters\/companyId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": [
+                  "id",
+                  "name",
+                  "recordCount"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "integer"
+                  },
+                  "recordCount": {
+                    "type": "integer"
+                  },
+                  "name": {
+                    "type": "string"
+                  }
+                },
+                "x-ref-id": "#\/definitions\/Contract"
+              }
+            },
+            "examples": {
+              "application\/json": [
+                {
+                  "id": 123456789,
+                  "name": "Some contract name"
+                },
+                {
+                  "ref": 987654321,
+                  "name": "Some other contract name"
+                }
+              ]
+            }
+          },
+          "400": {
+            "description": "Bad Input For Request",
+            "schema": {
+              "type": "object",
+              "required": [
+                "message",
+                "logref"
+              ],
+              "properties": {
+                "message": {
+                  "type": "string"
+                },
+                "logref": {
+                  "type": "string"
+                }
+              },
+              "x-ref-id": "#\/definitions\/SimpleVndInputError"
+            },
+            "examples": {
+              "application\/vnd.error+json": {
+                "message": "contractId is required",
+                "logref": "55e70b2bec80b"
+              }
+            },
+            "x-ref-id": "#\/responses\/InputError"
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "type": "object",
+              "required": [
+                "message",
+                "logref"
+              ],
+              "properties": {
+                "message": {
+                  "type": "string"
+                },
+                "logref": {
+                  "type": "string"
+                }
+              },
+              "x-ref-id": "#\/definitions\/SimpleVndError"
+            },
+            "examples": {
+              "application\/vnd.error+json": {
+                "message": "An unspecified error occurred",
+                "logref": "55e70ae612c2a"
+              }
+            },
+            "x-ref-id": "#\/responses\/UnspecifiedError"
+          }
+        }
+      }
+    },
+    "\/backup\/subscriptions": {
+      "get": {
+        "operationId": "swagger.controller.backup:getSubscriptions",
+        "summary": "Get all subscriptions by contractId",
+        "description": "Get",
+        "security": [
+          {
+            "api_key": []
+          }
+        ],
+        "produces": [
+          "application\/json",
+          "application\/vnd.error+json"
+        ],
+        "consumes": [
+          "application\/json"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "contractId",
+            "type": "integer",
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "companyId",
+            "type": "integer",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Backup subscriptions response",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": [
+                  "id",
+                  "name"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "integer"
+                  },
+                  "externalId": {
+                    "type": "integer"
+                  },
+                  "name": {
+                    "type": "string"
+                  }
+                },
+                "x-ref-id": "#\/definitions\/BackupSubscription"
+              }
+            },
+            "examples": {
+              "application\/json": [
+                {
+                  "id": 123456789,
+                  "name": "Some contract name"
+                },
+                {
+                  "ref": 987654321,
+                  "name": "Some other contract name"
+                }
+              ]
+            }
+          },
+          "404": {
+            "description": "Entity Not Found",
+            "schema": {
+              "type": "object",
+              "required": [
+                "message",
+                "logref"
+              ],
+              "properties": {
+                "message": {
+                  "type": "string"
+                },
+                "logref": {
+                  "type": "string"
+                }
+              },
+              "x-ref-id": "#\/definitions\/SimpleVndError"
+            },
+            "examples": {
+              "application\/vnd.error+json": {
+                "message": "An unspecified error occurred",
+                "logref": "55e70ae612c2a"
+              }
+            },
+            "x-ref-id": "#\/responses\/EntityNotFoundError"
+          },
+          "400": {
+            "description": "Bad Input For Request",
+            "schema": {
+              "type": "object",
+              "required": [
+                "message",
+                "logref"
+              ],
+              "properties": {
+                "message": {
+                  "type": "string"
+                },
+                "logref": {
+                  "type": "string"
+                }
+              },
+              "x-ref-id": "#\/definitions\/SimpleVndInputError"
+            },
+            "examples": {
+              "application\/vnd.error+json": {
+                "message": "contractId is required",
+                "logref": "55e70b2bec80b"
+              }
+            },
+            "x-ref-id": "#\/responses\/InputError"
+          },
+          "default": {
+            "description": "Server Error",
+            "schema": {
+              "type": "object",
+              "required": [
+                "message",
+                "logref"
+              ],
+              "properties": {
+                "message": {
+                  "type": "string"
+                },
+                "logref": {
+                  "type": "string"
+                }
+              },
+              "x-ref-id": "#\/definitions\/SimpleVndError"
+            },
+            "examples": {
+              "application\/vnd.error+json": {
+                "message": "An unspecified error occurred",
+                "logref": "55e70ae6w786d"
+              }
+            },
+            "x-ref-id": "#\/responses\/ServerError"
+          }
+        }
+      }
+    },
+    "\/backup\/invoices": {
+      "get": {
+        "operationId": "swagger.controller.backup_report:getInvoices",
+        "summary": "Fetch invoice names and IDs",
+        "description": "Fetches the names and IDs of invoices associated with an company by contact ID",
+        "security": [
+          {
+            "api_key": []
+          }
+        ],
+        "produces": [
+          "application\/json",
+          "application\/vnd.error+json"
+        ],
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "query",
+            "type": "integer",
+            "description": "Used to identify the company to be used",
+            "x-ref-id": "#\/parameters\/companyId"
+          },
+          {
+            "name": "year",
+            "in": "query",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": [
+                  "ref",
+                  "name"
+                ],
+                "properties": {
+                  "ref": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  }
+                },
+                "x-ref-id": "#\/definitions\/Invoice"
+              }
+            },
+            "examples": {
+              "application\/json": [
+                {
+                  "ref": "2015-08",
+                  "name": "August 2015"
+                },
+                {
+                  "ref": "2015-07",
+                  "name": "July 2015"
+                }
+              ]
+            }
+          },
+          "400": {
+            "description": "Bad Input For Request",
+            "schema": {
+              "type": "object",
+              "required": [
+                "message",
+                "logref"
+              ],
+              "properties": {
+                "message": {
+                  "type": "string"
+                },
+                "logref": {
+                  "type": "string"
+                }
+              },
+              "x-ref-id": "#\/definitions\/SimpleVndInputError"
+            },
+            "examples": {
+              "application\/vnd.error+json": {
+                "message": "contractId is required",
+                "logref": "55e70b2bec80b"
+              }
+            },
+            "x-ref-id": "#\/responses\/InputError"
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "type": "object",
+              "required": [
+                "message",
+                "logref"
+              ],
+              "properties": {
+                "message": {
+                  "type": "string"
+                },
+                "logref": {
+                  "type": "string"
+                }
+              },
+              "x-ref-id": "#\/definitions\/SimpleVndError"
+            },
+            "examples": {
+              "application\/vnd.error+json": {
+                "message": "An unspecified error occurred",
+                "logref": "55e70ae612c2a"
+              }
+            },
+            "x-ref-id": "#\/responses\/UnspecifiedError"
+          }
+        }
+      }
+    },
+    "\/backup\/report": {
+      "get": {
+        "operationId": "swagger.controller.backup_report:get",
+        "summary": "Fetch a backup report",
+        "description": "Get a summary of the backup usage",
+        "security": [
+          {
+            "api_key": []
+          }
+        ],
+        "produces": [
+          "application\/json",
+          "application\/vnd.error+json"
+        ],
+        "parameters": [
+          {
+            "name": "invoiceRef",
+            "in": "query",
+            "type": "string",
+            "description": "Include records associated with this invoice",
+            "x-ref-id": "#\/parameters\/invoiceRef"
+          },
+          {
+            "name": "contractId",
+            "in": "query",
+            "type": "integer",
+            "description": "Include records associated with this contract",
+            "x-ref-id": "#\/parameters\/contractId"
+          },
+          {
+            "name": "startDate",
+            "in": "query",
+            "type": "string",
+            "format": "date",
+            "description": "Include records collected starting this date (inclusive)",
+            "x-ref-id": "#\/parameters\/startDate"
+          },
+          {
+            "name": "endDate",
+            "in": "query",
+            "type": "string",
+            "format": "date",
+            "description": "Include records collected until this date (exclusive)",
+            "x-ref-id": "#\/parameters\/endDate"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "node": {
+                    "type": "string",
+                    "description": "Name of the node"
+                  },
+                  "records": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "recordedOn",
+                        "node",
+                        "mbOccupancy",
+                        "mbIn",
+                        "mbOut",
+                        "nodetype"
+                      ],
+                      "properties": {
+                        "id": {
+                          "type": "integer",
+                          "format": "int64"
+                        },
+                        "recordedOn": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "mbOccupancy": {
+                          "type": "number",
+                          "format": "float",
+                          "description": "MB Occupancy"
+                        },
+                        "mbIn": {
+                          "type": "number",
+                          "format": "float",
+                          "description": "Number of MBs in"
+                        },
+                        "mbOut": {
+                          "type": "number",
+                          "format": "float",
+                          "description": "Number of MBs out"
+                        },
+                        "node": {
+                          "type": "string",
+                          "description": "Name of the node"
+                        },
+                        "nodetype": {
+                          "type": "string",
+                          "description": "Type of the node"
+                        }
+                      },
+                      "x-ref-id": "#\/definitions\/BackupRecordSpec"
+                    }
+                  }
+                },
+                "x-ref-id": "#\/definitions\/BackupNodeSpec"
+              },
+              "x-ref-id": "#\/definitions\/BackupReport"
+            },
+            "examples": {
+              "BackupReport": [
+                {
+                  "date": 1430438400,
+                  "mbOccupancy": 105.11,
+                  "mbIn": 17.8,
+                  "mbOut": 3,
+                  "node": "node1",
+                  "nodetype": "server"
+                },
+                {
+                  "date": 1430438400,
+                  "mbOccupancy": 65.93,
+                  "mbIn": 3.11,
+                  "mbOut": 0,
+                  "node": "node2",
+                  "nodetype": "server"
+                },
+                {
+                  "date": 1430524800,
+                  "mbOccupancy": 120.91,
+                  "mbIn": 11.6,
+                  "mbOut": 0,
+                  "node": "node1",
+                  "nodetype": "server"
+                },
+                {
+                  "date": 1430524800,
+                  "mbOccupancy": 67.04,
+                  "mbIn": 12.4,
+                  "mbOut": 2.7,
+                  "node": "node2",
+                  "nodetype": "server"
+                }
+              ]
+            }
+          },
+          "403": {
+            "description": "The resulting data set is too large",
+            "schema": {
+              "type": "object",
+              "required": [
+                "message",
+                "logref"
+              ],
+              "properties": {
+                "message": {
+                  "type": "string"
+                },
+                "logref": {
+                  "type": "string"
+                }
+              },
+              "x-ref-id": "#\/definitions\/SimpleVndError"
+            },
+            "examples": {
+              "application\/vnd.error+json": {
+                "message": "An unspecified error occurred",
+                "logref": "55e70ae612c2a"
+              }
+            },
+            "x-ref-id": "#\/responses\/DataSetTooLargeError"
+          },
+          "400": {
+            "description": "Bad Input For Request",
+            "schema": {
+              "type": "object",
+              "required": [
+                "message",
+                "logref"
+              ],
+              "properties": {
+                "message": {
+                  "type": "string"
+                },
+                "logref": {
+                  "type": "string"
+                }
+              },
+              "x-ref-id": "#\/definitions\/SimpleVndInputError"
+            },
+            "examples": {
+              "application\/vnd.error+json": {
+                "message": "contractId is required",
+                "logref": "55e70b2bec80b"
+              }
+            },
+            "x-ref-id": "#\/responses\/InputError"
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "type": "object",
+              "required": [
+                "message",
+                "logref"
+              ],
+              "properties": {
+                "message": {
+                  "type": "string"
+                },
+                "logref": {
+                  "type": "string"
+                }
+              },
+              "x-ref-id": "#\/definitions\/SimpleVndError"
+            },
+            "examples": {
+              "application\/vnd.error+json": {
+                "message": "An unspecified error occurred",
+                "logref": "55e70ae612c2a"
+              }
+            },
+            "x-ref-id": "#\/responses\/UnspecifiedError"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Contract": {
+      "type": "object",
+      "required": [
+        "id",
+        "name",
+        "recordCount"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "recordCount": {
+          "type": "integer"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "x-ref-id": "#\/definitions\/Contract"
+    },
+    "Invoice": {
+      "type": "object",
+      "required": [
+        "ref",
+        "name"
+      ],
+      "properties": {
+        "ref": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "x-ref-id": "#\/definitions\/Invoice"
+    },
+    "SimpleVndInputError": {
+      "type": "object",
+      "required": [
+        "message",
+        "logref"
+      ],
+      "properties": {
+        "message": {
+          "type": "string"
+        },
+        "logref": {
+          "type": "string"
+        }
+      },
+      "x-ref-id": "#\/definitions\/SimpleVndInputError"
+    },
+    "SimpleVndError": {
+      "type": "object",
+      "required": [
+        "message",
+        "logref"
+      ],
+      "properties": {
+        "message": {
+          "type": "string"
+        },
+        "logref": {
+          "type": "string"
+        }
+      },
+      "x-ref-id": "#\/definitions\/SimpleVndError"
+    },
+    "VmSpecReport": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "name",
+          "description",
+          "types"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string",
+            "description": "Readable source type"
+          },
+          "types": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "vmName",
+                "records",
+                "monthAverage",
+                "units"
+              ],
+              "properties": {
+                "vmName": {
+                  "type": "string"
+                },
+                "monthAverage": {
+                  "type": "number",
+                  "format": "float"
+                },
+                "units": {
+                  "type": "number",
+                  "format": "float"
+                },
+                "records": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "contractId",
+                      "vmName",
+                      "vmRef",
+                      "recordedOn",
+                      "wasPoweredOn",
+                      "cpus",
+                      "ram",
+                      "storage"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "integer",
+                        "format": "int64"
+                      },
+                      "contractId": {
+                        "type": "integer",
+                        "format": "int64"
+                      },
+                      "vmName": {
+                        "type": "string",
+                        "description": "Name of the virtual machine"
+                      },
+                      "vmRef": {
+                        "type": "string",
+                        "description": "Reference ID of the virtual machine"
+                      },
+                      "recordedOn": {
+                        "type": "string",
+                        "format": "date"
+                      },
+                      "wasPoweredOn": {
+                        "type": "boolean"
+                      },
+                      "cpus": {
+                        "type": "integer",
+                        "format": "int8",
+                        "description": "Number of assigned CPUs"
+                      },
+                      "ram": {
+                        "type": "integer",
+                        "format": "int8",
+                        "description": "Assigned RAM in GB"
+                      },
+                      "storage": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Used storage in bytes"
+                      },
+                      "vmClass": {
+                        "type": "string",
+                        "description": "Classification of the VM, eg \"C216\""
+                      },
+                      "sourceType": {
+                        "type": "string",
+                        "description": "Standardized VM type name, eg \"VMM01\""
+                      },
+                      "sourceTypeDescription": {
+                        "type": "string",
+                        "description": "Understandable source type name eg \"Memory Intensive\""
+                      },
+                      "guestOs": {
+                        "type": "string",
+                        "description": "Eg \"Microsoft Windows Server 2008 R2 (64-bit)\""
+                      }
+                    },
+                    "x-ref-id": "#\/definitions\/VmSpecRecord"
+                  }
+                }
+              },
+              "x-ref-id": "#\/definitions\/VmSpecVirtualMachine"
+            }
+          }
+        },
+        "x-ref-id": "#\/definitions\/VmSpecSourceType"
+      },
+      "x-ref-id": "#\/definitions\/VmSpecReport"
+    },
+    "VmSpecSourceType": {
+      "type": "object",
+      "required": [
+        "name",
+        "description",
+        "types"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string",
+          "description": "Readable source type"
+        },
+        "types": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "vmName",
+              "records",
+              "monthAverage",
+              "units"
+            ],
+            "properties": {
+              "vmName": {
+                "type": "string"
+              },
+              "monthAverage": {
+                "type": "number",
+                "format": "float"
+              },
+              "units": {
+                "type": "number",
+                "format": "float"
+              },
+              "records": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "contractId",
+                    "vmName",
+                    "vmRef",
+                    "recordedOn",
+                    "wasPoweredOn",
+                    "cpus",
+                    "ram",
+                    "storage"
+                  ],
+                  "properties": {
+                    "id": {
+                      "type": "integer",
+                      "format": "int64"
+                    },
+                    "contractId": {
+                      "type": "integer",
+                      "format": "int64"
+                    },
+                    "vmName": {
+                      "type": "string",
+                      "description": "Name of the virtual machine"
+                    },
+                    "vmRef": {
+                      "type": "string",
+                      "description": "Reference ID of the virtual machine"
+                    },
+                    "recordedOn": {
+                      "type": "string",
+                      "format": "date"
+                    },
+                    "wasPoweredOn": {
+                      "type": "boolean"
+                    },
+                    "cpus": {
+                      "type": "integer",
+                      "format": "int8",
+                      "description": "Number of assigned CPUs"
+                    },
+                    "ram": {
+                      "type": "integer",
+                      "format": "int8",
+                      "description": "Assigned RAM in GB"
+                    },
+                    "storage": {
+                      "type": "integer",
+                      "format": "int64",
+                      "description": "Used storage in bytes"
+                    },
+                    "vmClass": {
+                      "type": "string",
+                      "description": "Classification of the VM, eg \"C216\""
+                    },
+                    "sourceType": {
+                      "type": "string",
+                      "description": "Standardized VM type name, eg \"VMM01\""
+                    },
+                    "sourceTypeDescription": {
+                      "type": "string",
+                      "description": "Understandable source type name eg \"Memory Intensive\""
+                    },
+                    "guestOs": {
+                      "type": "string",
+                      "description": "Eg \"Microsoft Windows Server 2008 R2 (64-bit)\""
+                    }
+                  },
+                  "x-ref-id": "#\/definitions\/VmSpecRecord"
+                }
+              }
+            },
+            "x-ref-id": "#\/definitions\/VmSpecVirtualMachine"
+          }
+        }
+      },
+      "x-ref-id": "#\/definitions\/VmSpecSourceType"
+    },
+    "VmSpecVirtualMachine": {
+      "type": "object",
+      "required": [
+        "vmName",
+        "records",
+        "monthAverage",
+        "units"
+      ],
+      "properties": {
+        "vmName": {
+          "type": "string"
+        },
+        "monthAverage": {
+          "type": "number",
+          "format": "float"
+        },
+        "units": {
+          "type": "number",
+          "format": "float"
+        },
+        "records": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "id",
+              "contractId",
+              "vmName",
+              "vmRef",
+              "recordedOn",
+              "wasPoweredOn",
+              "cpus",
+              "ram",
+              "storage"
+            ],
+            "properties": {
+              "id": {
+                "type": "integer",
+                "format": "int64"
+              },
+              "contractId": {
+                "type": "integer",
+                "format": "int64"
+              },
+              "vmName": {
+                "type": "string",
+                "description": "Name of the virtual machine"
+              },
+              "vmRef": {
+                "type": "string",
+                "description": "Reference ID of the virtual machine"
+              },
+              "recordedOn": {
+                "type": "string",
+                "format": "date"
+              },
+              "wasPoweredOn": {
+                "type": "boolean"
+              },
+              "cpus": {
+                "type": "integer",
+                "format": "int8",
+                "description": "Number of assigned CPUs"
+              },
+              "ram": {
+                "type": "integer",
+                "format": "int8",
+                "description": "Assigned RAM in GB"
+              },
+              "storage": {
+                "type": "integer",
+                "format": "int64",
+                "description": "Used storage in bytes"
+              },
+              "vmClass": {
+                "type": "string",
+                "description": "Classification of the VM, eg \"C216\""
+              },
+              "sourceType": {
+                "type": "string",
+                "description": "Standardized VM type name, eg \"VMM01\""
+              },
+              "sourceTypeDescription": {
+                "type": "string",
+                "description": "Understandable source type name eg \"Memory Intensive\""
+              },
+              "guestOs": {
+                "type": "string",
+                "description": "Eg \"Microsoft Windows Server 2008 R2 (64-bit)\""
+              }
+            },
+            "x-ref-id": "#\/definitions\/VmSpecRecord"
+          }
+        }
+      },
+      "x-ref-id": "#\/definitions\/VmSpecVirtualMachine"
+    },
+    "VmSpecRecord": {
+      "type": "object",
+      "required": [
+        "id",
+        "contractId",
+        "vmName",
+        "vmRef",
+        "recordedOn",
+        "wasPoweredOn",
+        "cpus",
+        "ram",
+        "storage"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "contractId": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "vmName": {
+          "type": "string",
+          "description": "Name of the virtual machine"
+        },
+        "vmRef": {
+          "type": "string",
+          "description": "Reference ID of the virtual machine"
+        },
+        "recordedOn": {
+          "type": "string",
+          "format": "date"
+        },
+        "wasPoweredOn": {
+          "type": "boolean"
+        },
+        "cpus": {
+          "type": "integer",
+          "format": "int8",
+          "description": "Number of assigned CPUs"
+        },
+        "ram": {
+          "type": "integer",
+          "format": "int8",
+          "description": "Assigned RAM in GB"
+        },
+        "storage": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Used storage in bytes"
+        },
+        "vmClass": {
+          "type": "string",
+          "description": "Classification of the VM, eg \"C216\""
+        },
+        "sourceType": {
+          "type": "string",
+          "description": "Standardized VM type name, eg \"VMM01\""
+        },
+        "sourceTypeDescription": {
+          "type": "string",
+          "description": "Understandable source type name eg \"Memory Intensive\""
+        },
+        "guestOs": {
+          "type": "string",
+          "description": "Eg \"Microsoft Windows Server 2008 R2 (64-bit)\""
+        }
+      },
+      "x-ref-id": "#\/definitions\/VmSpecRecord"
+    },
+    "BackupSubscription": {
+      "type": "object",
+      "required": [
+        "id",
+        "name"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "externalId": {
+          "type": "integer"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "x-ref-id": "#\/definitions\/BackupSubscription"
+    },
+    "BackupNodeSpec": {
+      "type": "object",
+      "properties": {
+        "node": {
+          "type": "string",
+          "description": "Name of the node"
+        },
+        "records": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "recordedOn",
+              "node",
+              "mbOccupancy",
+              "mbIn",
+              "mbOut",
+              "nodetype"
+            ],
+            "properties": {
+              "id": {
+                "type": "integer",
+                "format": "int64"
+              },
+              "recordedOn": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "mbOccupancy": {
+                "type": "number",
+                "format": "float",
+                "description": "MB Occupancy"
+              },
+              "mbIn": {
+                "type": "number",
+                "format": "float",
+                "description": "Number of MBs in"
+              },
+              "mbOut": {
+                "type": "number",
+                "format": "float",
+                "description": "Number of MBs out"
+              },
+              "node": {
+                "type": "string",
+                "description": "Name of the node"
+              },
+              "nodetype": {
+                "type": "string",
+                "description": "Type of the node"
+              }
+            },
+            "x-ref-id": "#\/definitions\/BackupRecordSpec"
+          }
+        }
+      },
+      "x-ref-id": "#\/definitions\/BackupNodeSpec"
+    },
+    "BackupRecordSpec": {
+      "type": "object",
+      "required": [
+        "recordedOn",
+        "node",
+        "mbOccupancy",
+        "mbIn",
+        "mbOut",
+        "nodetype"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "recordedOn": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "mbOccupancy": {
+          "type": "number",
+          "format": "float",
+          "description": "MB Occupancy"
+        },
+        "mbIn": {
+          "type": "number",
+          "format": "float",
+          "description": "Number of MBs in"
+        },
+        "mbOut": {
+          "type": "number",
+          "format": "float",
+          "description": "Number of MBs out"
+        },
+        "node": {
+          "type": "string",
+          "description": "Name of the node"
+        },
+        "nodetype": {
+          "type": "string",
+          "description": "Type of the node"
+        }
+      },
+      "x-ref-id": "#\/definitions\/BackupRecordSpec"
+    },
+    "BackupReport": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "node": {
+            "type": "string",
+            "description": "Name of the node"
+          },
+          "records": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "recordedOn",
+                "node",
+                "mbOccupancy",
+                "mbIn",
+                "mbOut",
+                "nodetype"
+              ],
+              "properties": {
+                "id": {
+                  "type": "integer",
+                  "format": "int64"
+                },
+                "recordedOn": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "mbOccupancy": {
+                  "type": "number",
+                  "format": "float",
+                  "description": "MB Occupancy"
+                },
+                "mbIn": {
+                  "type": "number",
+                  "format": "float",
+                  "description": "Number of MBs in"
+                },
+                "mbOut": {
+                  "type": "number",
+                  "format": "float",
+                  "description": "Number of MBs out"
+                },
+                "node": {
+                  "type": "string",
+                  "description": "Name of the node"
+                },
+                "nodetype": {
+                  "type": "string",
+                  "description": "Type of the node"
+                }
+              },
+              "x-ref-id": "#\/definitions\/BackupRecordSpec"
+            }
+          }
+        },
+        "x-ref-id": "#\/definitions\/BackupNodeSpec"
+      },
+      "x-ref-id": "#\/definitions\/BackupReport"
+    }
+  },
+  "externalDocs": {
+    "description": "Reporting API Docs",
+    "url": "http:\/\/wiki.oms.vancis.nl"
+  },
+  "securityDefinitions": {
+    "api_key": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header"
+    }
+  }
+}

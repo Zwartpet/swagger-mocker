@@ -1,0 +1,11 @@
+imports:
+    - { resource: config.yml }
+
+monolog:
+    handlers:
+        main:
+            type: syslog
+            level: %base_log_level%
+        console:
+            type:   console
+            bubble: false

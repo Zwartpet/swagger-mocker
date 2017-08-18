@@ -1,0 +1,9 @@
+/vendor/
+/bin/
+/app/cache/*
+/app/logs/*
+!app/cache/.gitkeep
+!app/logs/.gitkeep
+/.idea/
+app/config/parameters.yml
+docker-compose.yml

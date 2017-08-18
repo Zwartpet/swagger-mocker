@@ -1,0 +1,305 @@
+swagger: '2.0'
+info:
+  version: 1.0.0
+  title: Raas reporting API
+  contact:
+    email: john.kleijn@vancis.nl
+basePath: /raas/report/v1.0
+schemes:
+  - https
+securityDefinitions:
+  api_key:
+    type: apiKey
+    name: Authorization
+    in: header
+parameters:
+  workspaceId:
+    name: workspaceId
+    in: query
+    required: true
+    type: string
+    description: Include records associated with this workspace
+    x-ref-id: '#/parameters/workspaceId'
+  startDate:
+    name: startDate
+    in: query
+    required: true
+    type: string
+    format: date
+    description: Include records collected starting this date (inclusive)
+    x-ref-id: '#/parameters/startDate'
+  endDate:
+    name: endDate
+    in: query
+    required: true
+    type: string
+    format: date
+    description: Include records collected until this date (exclusive)
+    x-ref-id: '#/parameters/endDate'
+paths:
+  /report:
+    get:
+      operationId: 'swagger.controller.raas_report:findByDates'
+      summary: Fetch a report
+      description: 'Get a summary of VM type distribution, average memory and other interesting facts'
+      security:
+        - bearer: []
+      produces:
+        - application/json
+        - application/vnd.error+json
+      parameters:
+        - name: workspaceId
+          in: query
+          required: true
+          type: string
+          description: Include records associated with this workspace
+          x-ref-id: '#/parameters/workspaceId'
+        - name: startDate
+          in: query
+          required: true
+          type: string
+          format: date
+          description: Include records collected starting this date (inclusive)
+          x-ref-id: '#/parameters/startDate'
+        - name: endDate
+          in: query
+          required: true
+          type: string
+          format: date
+          description: Include records collected until this date (exclusive)
+          x-ref-id: '#/parameters/endDate'
+      responses:
+        '200':
+          description: Successful operation
+          schema:
+            type: array
+            items:
+              type: object
+              additionalProperties: false
+              properties:
+                recordedOn:
+                  type: string
+                  format: date-time
+                storageDb:
+                  type: number
+                  format: float
+                storageFs:
+                  type: number
+                  format: float
+                users:
+                  type: integer
+                vmRecords:
+                  type: array
+                  items:
+                    type: object
+                    additionalProperties: false
+                    required:
+                      - name
+                      - cpus
+                      - ram
+                      - customerReference
+                      - organization
+                    properties:
+                      name:
+                        type: string
+                      ram:
+                        type: integer
+                      cpus:
+                        type: integer
+                      powerState:
+                        type: boolean
+                      customerReference:
+                        type: string
+                      organization:
+                        type: string
+                    x-ref-id: '#/definitions/RaasVmSpec'
+              x-ref-id: '#/definitions/RaasWorkspaceSpec'
+            x-ref-id: 'reporting/v1.0/entities.yml#/definitions/RaasWorkspaceReport'
+          examples:
+            application/json:
+              - recordedOn: '2017-05-01T14:06:46.852Z'
+                storageDb: 3200
+                storageFs: 6400
+                users: 2
+                vmRecords:
+                  - name: vmname
+                    ram: 2
+                    cpus: 4
+                    powerState: false
+                    customerReference: cr
+                    organization: testorg
+              - recordedOn: '2017-05-02T14:06:46.852Z'
+                storageDb: 3200
+                storageFs: 6400
+                users: 2
+                vmRecords:
+                  - name: vmname
+                    ram: 2
+                    cpus: 4
+                    powerState: false
+                    customerReference: cr
+                    organization: testorg
+              - recordedOn: '2017-05-03T14:06:46.852Z'
+                storageDb: 3200
+                storageFs: 6400
+                users: 2
+                vmRecords:
+                  - name: vmname
+                    ram: 2
+                    cpus: 4
+                    powerState: false
+                    customerReference: cr
+                    organization: testorg
+              - recordedOn: '2017-05-04T14:06:46.852Z'
+                storageDb: 3200
+                storageFs: 6400
+                users: 2
+                vmRecords:
+                  - name: vmname
+                    ram: 2
+                    cpus: 4
+                    powerState: false
+                    customerReference: cr
+                    organization: testorg
+              - recordedOn: '2017-05-05T14:06:46.852Z'
+                storageDb: 3200
+                storageFs: 6400
+                users: 2
+                vmRecords:
+                  - name: vmname
+                    ram: 2
+                    cpus: 4
+                    powerState: false
+                    customerReference: cr
+                    organization: testorg
+              - recordedOn: '2017-05-06T14:06:46.852Z'
+                storageDb: 3200
+                storageFs: 6400
+                users: 2
+                vmRecords:
+                  - name: vmname
+                    ram: 2
+                    cpus: 4
+                    powerState: false
+                    customerReference: cr
+                    organization: testorg
+              - recordedOn: '2017-05-07T14:06:46.852Z'
+                storageDb: 3200
+                storageFs: 6400
+                users: 2
+                vmRecords:
+                  - name: vmname
+                    ram: 2
+                    cpus: 4
+                    powerState: false
+                    customerReference: cr
+                    organization: testorg
+              - recordedOn: '2017-05-08T14:06:46.852Z'
+                storageDb: 3200
+                storageFs: 6400
+                users: 2
+                vmRecords:
+                  - name: vmname
+                    ram: 2
+                    cpus: 4
+                    powerState: false
+                    customerReference: cr
+                    organization: testorg
+              - recordedOn: '2017-05-09T14:06:46.852Z'
+                storageDb: 3200
+                storageFs: 6400
+                users: 2
+                vmRecords:
+                  - name: vmname
+                    ram: 2
+                    cpus: 4
+                    powerState: false
+                    customerReference: cr
+                    organization: testorg
+              - recordedOn: '2017-05-10T14:06:46.852Z'
+                storageDb: 3200
+                storageFs: 6400
+                users: 2
+                vmRecords:
+                  - name: vmname
+                    ram: 2
+                    cpus: 4
+                    powerState: false
+                    customerReference: cr
+                    organization: testorg
+              - recordedOn: '2017-05-11T14:06:46.852Z'
+                storageDb: 3200
+                storageFs: 6400
+                users: 2
+                vmRecords:
+                  - name: vmname
+                    ram: 2
+                    cpus: 4
+                    powerState: false
+                    customerReference: cr
+                    organization: testorg
+              - recordedOn: '2017-05-12T14:06:46.852Z'
+                storageDb: 3200
+                storageFs: 6400
+                users: 2
+                vmRecords:
+                  - name: vmname
+                    ram: 2
+                    cpus: 4
+                    powerState: false
+                    customerReference: cr
+                    organization: testorg
+        '400':
+          description: Bad Input For Request
+          schema:
+            type: object
+            required:
+              - message
+              - logref
+            properties:
+              message:
+                type: string
+              logref:
+                type: string
+            x-ref-id: '../default/vnd-error.yml#/definitions/SimpleVndInputError'
+          examples:
+            application/vnd.error+json:
+              message: contractId is required
+              logref: 55e70b2bec80b
+          x-ref-id: '../default/responses.yml#/InputError'
+        '403':
+          description: The resulting data set is too large
+          schema:
+            type: object
+            required:
+              - message
+              - logref
+            properties:
+              message:
+                type: string
+              logref:
+                type: string
+            x-ref-id: '../default/vnd-error.yml#/definitions/SimpleVndError'
+          examples:
+            application/vnd.error+json:
+              message: An unspecified error occurred
+              logref: 55e70ae612c2a
+          x-ref-id: '../default/responses.yml#/DataSetTooLargeError'
+        '500':
+          description: Server Error
+          schema:
+            type: object
+            required:
+              - message
+              - logref
+            properties:
+              message:
+                type: string
+              logref:
+                type: string
+            x-ref-id: '../default/vnd-error.yml#/definitions/SimpleVndError'
+          examples:
+            application/vnd.error+json:
+              message: An unspecified error occurred
+              logref: 55e70ae612c2a
+          x-ref-id: '../default/responses.yml#/UnspecifiedError'

@@ -1,0 +1,48 @@
+{
+  "name": "zwartpet/swagger-mocker",
+  "type": "project",
+  "description": "This application is used to mock an api using swagger examples",
+  "autoload": {
+    "psr-4": {"Zwartpet\\SwaggerMockerBundle\\": "src/"}
+  },
+  "require": {
+    "php": "^7.0.0",
+    "symfony/framework-bundle": "^2.7",
+    "symfony/monolog-bundle": "^2.7",
+    "symfony/security-bundle": "^2.7",
+    "sensio/distribution-bundle": "^3.0",
+    "doctrine/common": "^2.5",
+    "doctrine/cache": "^1.5",
+    "kleijnweb/swagger-bundle": "^3.1",
+    "incenteev/composer-parameter-handler": "~2.0",
+    "jms/serializer-bundle": "^1.1",
+    "guzzlehttp/guzzle": "^6.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^5.1",
+    "symfony/debug": "^2.7"
+  },
+  "scripts": {
+    "buildParameters": "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
+    "buildBootstrap": "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
+    "post-install-cmd": [
+      "@buildParameters",
+      "@buildBootstrap"
+    ],
+    "post-update-cmd": [
+      "@buildParameters",
+      "@buildBootstrap"
+    ]
+  },
+  "config": {
+    "bin-dir": "bin"
+  },
+  "extra": {
+    "symfony-app-dir": "app",
+    "symfony-web-dir": "web",
+    "incenteev-parameters": {
+      "file": "app/config/parameters.yml",
+      "keep-outdated": true
+    }
+  }
+}
