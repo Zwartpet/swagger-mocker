@@ -1,0 +1,11 @@
+web:
+    build: .
+    dockerfile: Dockerfile
+    hostname: swagger-mocker.local
+    volumes:
+        - ./docker:/tmp/docker
+        - .:/var/www/html
+    environment:
+        - SYMFONY_ENV=docker
+    ports:
+        - "80"
