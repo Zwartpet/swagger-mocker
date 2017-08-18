@@ -5,7 +5,7 @@ default: install
 install: clean composer
 
 composer:
-	  composer install $(COMPOSER_OPTS)
+	  /usr/local/bin/composer install $(COMPOSER_OPTS)
 
 clean:
 	  rm -rf app/cache/*
