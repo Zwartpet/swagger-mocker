@@ -1,6 +1,6 @@
 <?php
 
-namespace Vancis\SwaggerMockerBundle\Routing;
+namespace Zwartpet\SwaggerMockerBundle\Routing;
 
 use KleijnWeb\SwaggerBundle\Document\DocumentRepository;
 use KleijnWeb\SwaggerBundle\Document\SwaggerDocument;

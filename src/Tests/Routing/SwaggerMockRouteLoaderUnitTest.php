@@ -1,9 +1,9 @@
 <?php
 
-namespace Vancis\SwaggerMockerBundle\Tests\Routing;
+namespace Zwartpet\SwaggerMockerBundle\Tests\Routing;
 
 use KleijnWeb\SwaggerBundle\Document\DocumentRepository;
-use Vancis\SwaggerMockerBundle\Routing\SwaggerMockRouteLoader;
+use Zwartpet\SwaggerMockerBundle\Routing\SwaggerMockRouteLoader;
 
 /**
  * @group unit

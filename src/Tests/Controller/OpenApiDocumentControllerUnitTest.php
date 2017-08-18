@@ -1,10 +1,10 @@
 <?php
 
-namespace Vancis\SwaggerMockerBundle\Tests\Controller;
+namespace Zwartpet\SwaggerMockerBundle\Tests\Controller;
 
 use KleijnWeb\SwaggerBundle\Document\DocumentRepository;
 use KleijnWeb\SwaggerBundle\Document\SwaggerDocument;
-use Vancis\SwaggerMockerBundle\Controller\OpenApiDocumentController;
+use Zwartpet\SwaggerMockerBundle\Controller\OpenApiDocumentController;
 
 /**
  * @group unit

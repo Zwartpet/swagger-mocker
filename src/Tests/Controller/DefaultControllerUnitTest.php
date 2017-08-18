@@ -1,11 +1,11 @@
 <?php
 
-namespace Vancis\SwaggerMockerBundle\Tests\Controller;
+namespace Zwartpet\SwaggerMockerBundle\Tests\Controller;
 
 use KleijnWeb\SwaggerBundle\Document\OperationObject;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Vancis\SwaggerMockerBundle\Controller\DefaultController;
+use Zwartpet\SwaggerMockerBundle\Controller\DefaultController;
 
 /**
  * @group unit

@@ -1,5 +1,5 @@
 <?php
-namespace Vancis\SwaggerMockerBundle\Controller;
+namespace Zwartpet\SwaggerMockerBundle\Controller;
 
 use KleijnWeb\SwaggerBundle\Document\DocumentRepository;
 use Symfony\Component\HttpFoundation\Response;

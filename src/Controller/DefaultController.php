@@ -1,6 +1,6 @@
 <?php
 
-namespace Vancis\SwaggerMockerBundle\Controller;
+namespace Zwartpet\SwaggerMockerBundle\Controller;
 
 use KleijnWeb\SwaggerBundle\Document\OperationObject;
 use Symfony\Component\HttpFoundation\Request;

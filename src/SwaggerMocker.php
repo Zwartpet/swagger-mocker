@@ -1,6 +1,6 @@
 <?php
 
-namespace Vancis\SwaggerMockerBundle;
+namespace Zwartpet\SwaggerMockerBundle;
 
 use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
