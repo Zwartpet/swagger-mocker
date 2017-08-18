@@ -1,7 +1,7 @@
 FROM php:7-apache
 
 RUN apt-get update \
-        && apt-get install -y libicu-dev git \
+        && apt-get install -y libicu-dev git vim tar curl \
         && apt-get clean \
         && rm -rf /var/lib/apt/lists/*
 
@@ -13,3 +13,4 @@ RUN sed -i 's/\/var\/www\/html/\/var\/www\/html\/web/g' /etc/apache2/sites-avail
 
 COPY . /var/www/html
 RUN make -e install
+RUN chown -R apache:apache /var/www/html
