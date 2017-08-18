@@ -1,6 +1,6 @@
 services:
     api.document_controller:
-        class: Vancis\SwaggerMockerBundle\Controller\OpenApiDocumentController
+        class: Zwartpet\SwaggerMockerBundle\Controller\OpenApiDocumentController
         arguments: ['@swagger.document.repository']
 
     cache.documents:
@@ -9,10 +9,10 @@ services:
           - [ setNamespace, ['documents'] ]
 
     swagger.mocker.route_loader:
-        class: Vancis\SwaggerMockerBundle\Routing\SwaggerMockRouteLoader
+        class: Zwartpet\SwaggerMockerBundle\Routing\SwaggerMockRouteLoader
         arguments: ['@swagger.document.repository']
         tags:
            - { name: routing.loader }
 
     swagger.controller.default:
-        class: Vancis\SwaggerMockerBundle\Controller\DefaultController
+        class: Zwartpet\SwaggerMockerBundle\Controller\DefaultController

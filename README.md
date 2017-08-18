@@ -11,4 +11,8 @@ This project uses the [Kleijnweb\SwaggerBundle](https://github.com/kleijnweb/swa
 
 ## Usage
 
-WIP
+### Local usage
+
+1. Checkout the project and install dependencies
+2. Replace the content of web/swagger/default.json with the specification you want to mock
+3. Run the application with docker-compose
