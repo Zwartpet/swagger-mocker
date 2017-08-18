@@ -1,0 +1,2 @@
+[![Build Status](https://travis-ci.org/Zwartpet/swagger-mocker.svg?branch=master)](https://travis-ci.org/Zwartpet/swagger-mocker)
+[![Coverage Status](https://coveralls.io/repos/github/Zwartpet/swagger-mocker/badge.svg?branch=master)](https://coveralls.io/github/Zwartpet/swagger-mocker?branch=master)
