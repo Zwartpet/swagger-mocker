@@ -13,4 +13,4 @@ RUN sed -i 's/\/var\/www\/html/\/var\/www\/html\/web/g' /etc/apache2/sites-avail
 
 COPY . /var/www/html
 RUN make -e install
-RUN chown -R 1000:1000 /var/www/html
+RUN chown -R www-data:www-data /var/www/html
