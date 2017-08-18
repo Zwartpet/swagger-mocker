@@ -5,28 +5,25 @@
          xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/4.8/phpunit.xsd"
          backupGlobals="false"
          colors="true"
-         bootstrap="autoload.php"
+         bootstrap="app/autoload.php"
 >
     <php>
-        <ini name="error_reporting" value="-1" />
-        <!--
-            <server name="KERNEL_DIR" value="/path/to/your/app/" />
-        -->
+        <server name="KERNEL_DIR" value="app" />
     </php>
 
     <testsuites>
         <testsuite name="Project Test Suite">
-            <directory>../src/Tests</directory>
+            <directory>src/Tests</directory>
         </testsuite>
     </testsuites>
 
     <filter>
         <whitelist>
-            <directory>../src</directory>
+            <directory>src</directory>
             <exclude>
-                <directory>../src/Resources</directory>
-                <directory>../src/Tests</directory>
-                <file>../src/SwaggerMocker.php</file>
+                <directory>src/Resources</directory>
+                <directory>src/Tests</directory>
+                <file>src/SwaggerMocker.php</file>
             </exclude>
         </whitelist>
     </filter>
