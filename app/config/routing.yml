@@ -5,9 +5,8 @@ specification:
 default-yml:
     resource: "default.yml"
     type: swagger-mock
-    prefix: yml/%mocker.prefix%
+    prefix: yml
 
 default-json:
     resource: "default.json"
     type: swagger-mock
-    prefix: %mocker.prefix%
