@@ -16,3 +16,4 @@ services:
 
     swagger.controller.default:
         class: Zwartpet\SwaggerMockerBundle\Controller\DefaultController
+        arguments: ['%kernel.root_dir%']

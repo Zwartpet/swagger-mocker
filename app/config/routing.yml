@@ -2,11 +2,6 @@ specification:
     path:     /specification/{path}
     defaults: { _controller: api.document_controller:get }
 
-default-yml:
-    resource: "default.yml"
-    type: swagger-mock
-    prefix: yml
-
 default-json:
     resource: "default.json"
     type: swagger-mock
