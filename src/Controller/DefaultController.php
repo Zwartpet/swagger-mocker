@@ -20,7 +20,7 @@ class DefaultController extends Controller
      */
     public function __construct($rootDir)
     {
-        $this->examplesDir = $rootDir . '../web/swagger/examples/';
+        $this->examplesDir = $rootDir . '/../web/swagger/examples/';
     }
 
     /**

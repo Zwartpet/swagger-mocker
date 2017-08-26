@@ -19,7 +19,7 @@ class DefaultControllerUnitTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->controller = new DefaultController(__DIR__ . '/../../');
+        $this->controller = new DefaultController(__DIR__ . '/../..');
     }
 
     /**
