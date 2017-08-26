@@ -35,8 +35,12 @@ class SwaggerMockRouteLoaderUnitTest extends \PHPUnit_Framework_TestCase
         $this->documentMock = $this
             ->getMockBuilder('KleijnWeb\SwaggerBundle\Document\SwaggerDocument')
             ->disableOriginalConstructor()
-            ->setMethods(['getPathDefinitions'])
+            ->setMethods(['getPathDefinitions', 'getDefinition'])
             ->getMock();
+
+        $this->documentMock->expects($this->any())
+            ->method('getDefinition')
+            ->willReturn(json_decode('{"basePath": "/api"}'));
 
         $repositoryMock = $this->repositoryMock = $this
             ->getMockBuilder('KleijnWeb\SwaggerBundle\Document\DocumentRepository')
@@ -171,7 +175,7 @@ class SwaggerMockRouteLoaderUnitTest extends \PHPUnit_Framework_TestCase
      */
     public function canUseOperationIdForMethodName()
     {
-        $expected = 'my.controller.key:methodName';
+        $expected        = 'my.controller.key:methodName';
         $pathDefinitions = (object)[
             '/a' => (object)[
                 'get'  => (object)[],
@@ -198,11 +202,11 @@ class SwaggerMockRouteLoaderUnitTest extends \PHPUnit_Framework_TestCase
     public function canUseXRouterMethodToOverrideMethod()
     {
         $pathDefinitions = (object)[
-            '/a'       => (object)[
+            '/a' => (object)[
                 'get'  => (object)[],
                 'post' => (object)['x-router-controller-method' => 'myMethodName']
             ],
-            '/b'       => (object)['get' => (object)[]],
+            '/b' => (object)['get' => (object)[]],
         ];
 
         $this->documentMock
@@ -221,7 +225,7 @@ class SwaggerMockRouteLoaderUnitTest extends \PHPUnit_Framework_TestCase
      */
     public function cannotUseXRouterControllerForDiKeyInOperation()
     {
-        $diKey = 'my.x_router.controller';
+        $diKey           = 'my.x_router.controller';
         $pathDefinitions = (object)[
             '/a' => (object)[
                 'get'  => (object)[],
@@ -247,7 +251,7 @@ class SwaggerMockRouteLoaderUnitTest extends \PHPUnit_Framework_TestCase
      */
     public function cannotUseXRouterControllerForDiKeyInPath()
     {
-        $diKey = 'my.x_router.controller';
+        $diKey           = 'my.x_router.controller';
         $pathDefinitions = (object)[
             '/a' => (object)[
                 'x-router-controller' => $diKey,
@@ -274,7 +278,7 @@ class SwaggerMockRouteLoaderUnitTest extends \PHPUnit_Framework_TestCase
      */
     public function cannotUseXRouterForDiKeyInPath()
     {
-        $router = 'my.x_router';
+        $router          = 'my.x_router';
         $pathDefinitions = (object)[
             'x-router' => $router,
             '/a'       => (object)[
@@ -339,7 +343,15 @@ class SwaggerMockRouteLoaderUnitTest extends \PHPUnit_Framework_TestCase
 
         $routes = $this->loader->load(self::DOCUMENT_PATH);
 
-        $definitionPaths = array_keys((array)$pathDefinitions);
+        $definitionPaths = [
+            '/api/1/2/3',
+            '/api/a',
+            '/api/a/b',
+            '/api/a/b/c',
+            '/api/d/f/g',
+            '/api/foo/{bar}/{blah}',
+            '/api/z'
+        ];
         sort($definitionPaths);
         $routePaths = array_map(function ($route) {
             return $route->getPath();
@@ -382,7 +394,7 @@ class SwaggerMockRouteLoaderUnitTest extends \PHPUnit_Framework_TestCase
      */
     public function willAddRequirementsForStringPatternParams()
     {
-        $expected = '\d{2}hello';
+        $expected        = '\d{2}hello';
         $pathDefinitions = (object)[
             '/a' => (object)[
                 'get' => (object)[
@@ -412,8 +424,8 @@ class SwaggerMockRouteLoaderUnitTest extends \PHPUnit_Framework_TestCase
      */
     public function willAddRequirementsForStringEnumParams()
     {
-        $enum = ['a', 'b', 'c'];
-        $expected = '(a|b|c)';
+        $enum            = ['a', 'b', 'c'];
+        $expected        = '(a|b|c)';
         $pathDefinitions = (object)[
             '/a' => (object)[
                 'get' => (object)[

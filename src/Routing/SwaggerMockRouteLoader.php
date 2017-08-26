@@ -12,7 +12,7 @@ class SwaggerMockRouteLoader extends SwaggerRouteLoader
 {
     const CONTROLLER_KEY = 'swagger.controller.default:getResponse';
     const ROUTE_NAME     = 'swagger.controller.default';
-    
+
     /**
      * @var array
      */
@@ -64,6 +64,7 @@ class SwaggerMockRouteLoader extends SwaggerRouteLoader
 
         $routes = new RouteCollection();
 
+        $basePath = $document->getDefinition()->basePath;
         $paths = $document->getPathDefinitions();
         $router = 'swagger.controller';
         foreach ($paths as $path => $pathSpec) {
@@ -98,9 +99,10 @@ class SwaggerMockRouteLoader extends SwaggerRouteLoader
                     '_swagger_path' => $path
                 ];
 
+                $routePath = ltrim($basePath, '/') . $path;
                 $routeName = $this->resolveRouteName($operationSpec, $methodName);
-                
-                $route = new Route($path, $defaults, $this->resolveRequirements($document, $path, $methodName));
+
+                $route = new Route($routePath, $defaults, $this->resolveRequirements($document, $path, $methodName));
                 $route->setMethods($methodName);
                 $routes->add($this->createRouteId($resource, $path, $routeName), $route);
             }

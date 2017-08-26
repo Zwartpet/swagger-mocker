@@ -19,13 +19,13 @@ class DefaultControllerUnitTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->controller = new DefaultController();
+        $this->controller = new DefaultController(__DIR__ . '/../..');
     }
 
     /**
      * @test
      */
-    public function canReturnExampleResponse()
+    public function canReturnExampleResponseFromSpec()
     {
         $request = $this->mockRequest([
             '200' => [
@@ -38,6 +38,27 @@ class DefaultControllerUnitTest extends \PHPUnit_Framework_TestCase
         $response = $this->controller->getResponse($request);
 
         $this->assertEquals('success', $response);
+    }
+
+    /**
+     * @test
+     */
+    public function canReturnExampleResponseFromFile()
+    {
+        $request = $this->mockRequest([
+            '200' => [
+                'examples' => [
+                    'application/json' => 'success'
+                ]
+            ]
+        ],[
+            '_route_params' => ['id' => 1]
+        ]);
+
+        $response = $this->controller->getResponse($request);
+        $this->assertEquals(1, $response->id);
+        $this->assertEquals('Matt', $response->name);
+        $this->assertEquals('Cat', $response->tag);
     }
 
     /**
@@ -90,16 +111,36 @@ class DefaultControllerUnitTest extends \PHPUnit_Framework_TestCase
         $this->controller->getResponse($request);
     }
 
-    private function mockRequest($responses)
+    /**
+     * @param $responses
+     * @param array $attributes
+     * @param array $query
+     *
+     * @return \PHPUnit_Framework_MockObject_MockObject|Request
+     */
+    private function mockRequest($responses, $attributes = [], $query = [])
     {
-        $definition = json_decode(json_encode([
-            'responses' => $responses
-        ]));
-        $operation = $this->getMockBuilder(OperationObject::class)->disableOriginalConstructor()->getMock();
-        $operation->expects($this->once())->method('getDefinition')->willReturn($definition);
+        $request = $this->getMockBuilder(Request::class)->setMethods(['get'])
+            ->setConstructorArgs([
+                $query,
+                [],
+                $attributes
+            ])
+            ->getMock();
 
-        $request = $this->getMockBuilder(Request::class)->disableOriginalConstructor()->getMock();
-        $request->expects($this->once())->method('get')->willReturn($operation);
+        $request->expects($this->atLeastOnce())->method('get')->willReturnCallback(function ($key) use ($responses) {
+            if ($key === '_route') {
+                return 'swagger.default.pets.id.findPetById';
+            }
+
+            $definition = json_decode(json_encode([
+                'responses' => $responses
+            ]));
+            $operation = $this->getMockBuilder(OperationObject::class)->disableOriginalConstructor()->getMock();
+            $operation->expects($this->once())->method('getDefinition')->willReturn($definition);
+
+            return $operation;
+        });
 
         return $request;
     }
