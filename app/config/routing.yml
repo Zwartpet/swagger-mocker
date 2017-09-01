@@ -1,5 +1,5 @@
 specification:
-    path:     /specification/{path}
+    path:     /specification
     defaults: { _controller: api.document_controller:get }
 
 default-json:

@@ -20,13 +20,11 @@ class OpenApiDocumentController
     }
 
     /**
-     * @param string $path
-     *
      * @return Response
      */
-    public function get($path)
+    public function get()
     {
-        $document  = $this->repository->get("$path.yml");
+        $document  = $this->repository->get("default.json");
         $response  = new Response();
 
         $response->headers->set('Content-Type', 'application/json');

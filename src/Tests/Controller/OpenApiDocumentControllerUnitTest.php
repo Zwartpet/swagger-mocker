@@ -48,7 +48,7 @@ class OpenApiDocumentControllerUnitTest extends \PHPUnit_Framework_TestCase
             ->method('getDefinition')
             ->willReturn('test');
 
-        $definitionResponse = $this->controller->get('path');
+        $definitionResponse = $this->controller->get();
         $this->assertEquals(200, $definitionResponse->getStatusCode());
         $this->assertEquals('"test"', $definitionResponse->getContent());
     }
